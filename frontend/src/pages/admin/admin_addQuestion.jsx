@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AdminAddQuestion() {
   const [examId, setExamId] = useState('');
@@ -6,6 +7,8 @@ function AdminAddQuestion() {
   const [options, setOptions] = useState(['', '', '', '']); // Now 4 options
   const [correctOption, setCorrectOption] = useState('');
   const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const handleOptionChange = (index, value) => {
     const newOptions = [...options];
@@ -65,6 +68,13 @@ function AdminAddQuestion() {
             {message}
           </div>
         )}
+        {/*back button */}
+        <button
+          onClick={() => navigate('/admin/dashboard')} // Replace with your actual admin route
+          className="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+        >
+          ← Back to Home
+        </button>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -73,7 +83,7 @@ function AdminAddQuestion() {
             value={examId}
             onChange={(e) => setExamId(e.target.value)}
             className="w-full p-2 border rounded"
-            required
+
           />
 
           <textarea
@@ -82,7 +92,7 @@ function AdminAddQuestion() {
             onChange={(e) => setQuestionText(e.target.value)}
             className="w-full p-2 border rounded"
             rows="3"
-            required
+      
           />
 
           {options.map((option, index) => (
@@ -93,7 +103,7 @@ function AdminAddQuestion() {
               value={option}
               onChange={(e) => handleOptionChange(index, e.target.value)}
               className="w-full p-2 border rounded"
-              required
+           
             />
           ))}
 
@@ -103,7 +113,7 @@ function AdminAddQuestion() {
             value={correctOption}
             onChange={(e) => setCorrectOption(e.target.value)}
             className="w-full p-2 border rounded"
-            required
+        
           />
 
           <button

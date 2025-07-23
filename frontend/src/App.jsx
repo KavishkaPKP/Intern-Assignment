@@ -21,6 +21,7 @@ import StudentRegister from './pages/student_register.jsx';
 import ExamList from './pages/exam_list.jsx';
 import AttemptExam from './pages/attemp_exam.jsx';
 import ExamResults from './pages/exam_results.jsx';
+import EditQuestion from './pages/admin/admin_editQuestion.jsx'
 
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/add-question" element={<AdminAddQuestion />} />
         <Route path="/admin/add-exam" element={<admin_add_exam />} />
+        <Route path="/admin/edit-question" element={<EditQuestion />} />
+
 
         {/* Student Routes */}
         <Route path="/" element={<StudentLogin />} />

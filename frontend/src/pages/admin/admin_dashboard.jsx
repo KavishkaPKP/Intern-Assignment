@@ -1,37 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function admin_dashboard() {
+function AdminDashboard() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const examId = 'sampleExamId'; // Replace with dynamic exam ID if needed
 
-  // Load all questions
   useEffect(() => {
-    fetch('http://localhost:5000/api/questions/sampleExamId') // Replace with real examId or change API to return all
-      .then(res => res.json())
-      .then(data => setQuestions(data))
-      .catch(err => console.error('Error fetching questions:', err));
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/questions/${examId}`);
+        if (!response.ok) throw new Error('Failed to fetch questions');
+        const data = await response.json();
+        setQuestions(data);
+        setLoading(false);
+      } catch (err) {
+        setError('Error loading questions');
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/admin/delete-question/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/admin/delete-question/${id}`, {
         method: 'DELETE',
       });
+      if (!res.ok) throw new Error('Delete failed');
       setQuestions(prev => prev.filter(q => q._id !== id));
-    } catch (error) {
-      console.error('Delete error:', error);
+    } catch (err) {
+      alert('Failed to delete question');
     }
   };
 
   const handleEdit = (id) => {
     navigate(`/admin/edit-question/${id}`);
   };
-
+  
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <div className="flex items-center space-x-4">
+          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        </div>
         <button
           onClick={() => navigate('/admin/add-question')}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -41,21 +56,23 @@ function admin_dashboard() {
       </div>
 
       {/* Question Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 text-left">Question</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {questions.length === 0 ? (
+      {loading ? (
+        <p>Loading questions...</p>
+      ) : error ? (
+        <p className="text-red-600">{error}</p>
+      ) : questions.length === 0 ? (
+        <p>No questions available</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-100">
               <tr>
-                <td className="px-4 py-2" colSpan="2">No questions available</td>
+                <th className="px-4 py-2 text-left">Question</th>
+                <th className="px-4 py-2">Actions</th>
               </tr>
-            ) : (
-              questions.map((q) => (
+            </thead>
+            <tbody>
+              {questions.map((q) => (
                 <tr key={q._id} className="border-t">
                   <td className="px-4 py-2">{q.questionText}</td>
                   <td className="px-4 py-2 space-x-2">
@@ -73,13 +90,13 @@ function admin_dashboard() {
                     </button>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
 
-export default admin_dashboard;
+export default AdminDashboard;

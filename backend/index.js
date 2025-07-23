@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 
 import authRoutes from './routes/auth_route.js';
-import adminRoutes from './routes/admin_route.js';
+import admin from './routes/admin_route.js';
 import examRoutes from './routes/exam_route.js';
 import questionRoutes from './routes/question_routes.js';
 import resultRoutes from './routes/result_route.js';
@@ -32,7 +32,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/results', resultRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/admin', admin);
 
 // Start server
 const PORT = process.env.PORT || 5000;
