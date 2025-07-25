@@ -42,15 +42,6 @@ npm start
 ## 🧪 Sample Credentials
 
 ```
-Email: admin@example.com
-Password: password123
+Email: pasindu@gmail.com
+Password: 12345
 ```
-
-## 📬 API Endpoints
-
-- `GET /api/exams` - List all exams
-- `GET /api/questions/:examId` - Get questions for an exam
-- `POST /api/submit` - Submit answers
-- `GET /api/results/:id` - Get result for a submission
-
-
