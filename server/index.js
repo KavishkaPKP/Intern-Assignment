@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -18,14 +17,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//routes
 app.use('/api/auth', authRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/questions', questionRoutes);
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('MongoDB connected');
-    app.listen(process.env.PORT || 5000, () => console.log('Server running'));
-  })
-  .catch(err => console.error(err));
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    const now = new Date();
+
+    const formattedTime = now.toLocaleString(); 
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Last refreshed at: ${formattedTime}`);
+});
